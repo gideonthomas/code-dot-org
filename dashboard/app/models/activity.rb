@@ -109,5 +109,4 @@ class Activity < ActiveRecord::Base
   def self.progress_queue
     AsyncProgressHandler.progress_queue
   end
-
 end

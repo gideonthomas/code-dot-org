@@ -133,5 +133,4 @@ class UsersHelperTest < ActionView::TestCase
       }
     }, summarize_user_progress(script, user))
   end
-
 end

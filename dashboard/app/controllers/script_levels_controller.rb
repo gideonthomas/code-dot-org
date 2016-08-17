@@ -274,5 +274,4 @@ class ScriptLevelsController < ApplicationController
   def protect_against_forgery?
     return false
   end
-
 end
