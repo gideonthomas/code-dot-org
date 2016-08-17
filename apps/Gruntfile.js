@@ -98,6 +98,8 @@ module.exports = function (grunt) {
     }
   }
 
+  var npmRoot = String(child_process.execSync('npm root')).replace(/\s+$/g,'');
+
   config.clean = {
     all: ['build']
   };
@@ -175,6 +177,24 @@ module.exports = function (grunt) {
           cwd: piskelRoot,
           src: '**',
           dest: 'build/package/js/piskel/'
+        },
+        {
+          expand: true,
+          cwd: npmRoot + '/react-virtualized-select',
+          src: ['styles.css'],
+          dest: 'build/package/css/react-virtualized-select/'
+        },
+        {
+          expand: true,
+          cwd: npmRoot + '/react-select/dist',
+          src: ['react-select.css'],
+          dest: 'build/package/css/react-select/'
+        },
+        {
+          expand: true,
+          cwd: npmRoot + '/react-virtualized',
+          src: ['styles.css'],
+          dest: 'build/package/css/react-virtualized/'
         },
         {
           expand: true,
