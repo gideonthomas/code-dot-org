@@ -193,4 +193,21 @@ ruby
     end.compact
   end
 
+  def lockable_state(user_id:, user_name:, level:, script_id:, stage:)
+    user_level = UserLevel.find_by(user_id: user_id, level: level, script_id: script_id)
+    # user_level_data is provided so that we can get back to our user_level when updating. in some cases we
+    # don't yet have a user_level, and need to provide enough data to create one
+    {
+      user_level_data: {
+        user_id: user_id,
+        level_id: level.id,
+        script_id: script_id
+      },
+      name: user_name,
+      # if we don't have a user level, consider ourselves locked
+      locked: user_level ? user_level.locked?(stage) : true,
+      readonly_answers: user_level ? !user_level.locked?(stage) && user_level.readonly_answers? : false
+    }
+  end
+
 end

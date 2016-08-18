@@ -133,21 +133,14 @@ class Stage < ActiveRecord::Base
       raise 'Expect lockable stages to have a single script_level'
     end
     script_level = self.script_levels[0]
+
+    script_id = script_level.script.id
+    level = script_level.level
+
+    raise 'Lockable stages must be a level group' unless level.is_a? LevelGroup
+
     return students.map do |student|
-      user_level = UserLevel.find_by(user_id: student.id, level: script_level.level, script_id: self.script.id)
-      # user_level_data is provided so that we can get back to our user_level when updating. in some cases we
-      # don't yet have a user_level, and need to provide enough data to create one
-      {
-        user_level_data: {
-          user_id: student.id,
-          level_id: script_level.level.id,
-          script_id: script_level.script.id
-        },
-        name: student.name,
-        # if we don't have a user level, consider ourselves locked
-        locked: user_level ? user_level.locked?(self) : true,
-        readonly_answers: user_level ? !user_level.locked?(self) && user_level.readonly_answers? : false
-      }
+      level.lockable_state(user_id: student.id, user_name: student.name, level: level, script_id: script_id, stage: self)
     end
   end
 end
