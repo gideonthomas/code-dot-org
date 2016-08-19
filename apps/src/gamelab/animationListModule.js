@@ -172,6 +172,8 @@ export function setInitialAnimationList(serializedAnimationList) {
     };
   }
 
+  // Migrate here
+
   try {
     throwIfSerializedAnimationListIsInvalid(serializedAnimationList);
   } catch (err) {
